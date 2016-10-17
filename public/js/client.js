@@ -25,7 +25,7 @@ function displayTasks(response) {
     //$("#taskTable tr:last").after("<tr class='info'><td>" + tasks.task + "</td><td>" + tasks.status + "</td><td><button>Delete</button></td>" );
 
     $form.append('<input type="text" name="task" value="' + tasks.task + '"/>');
-    $form.append('<input type="text" name="status" value="incomplete"/>');
+    $form.append('<input type="text" name="' + tasks.is_complete + '" value="incomplete"/>');
     var $deleteButton = $('<button class="delete">Delete</button>');
     $deleteButton.data('id', tasks.id);
     $form.append($deleteButton);
