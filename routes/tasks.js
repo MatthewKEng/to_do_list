@@ -39,8 +39,8 @@ router.post('/', function(req, res){
       return;
     }
 
-    client.query('INSERT INTO tasks (task, status) VALUES ($1, $2) returning *;',
-    [req.body.task, req.body.status],
+    client.query('INSERT INTO tasks (task) VALUES ($1) returning *;',
+    [req.body.task],
     function(err, result){
       done();
       if (err) {
@@ -57,7 +57,7 @@ router.post('/', function(req, res){
 router.put('/:id', function(req, res) {
   var id = req.params.id;
   var task = req.body.task;
-  var status = req.body.status;
+  var status = req.body.is_complete;
 
   pool.connect(function(err, client, done){
     try {
@@ -67,8 +67,8 @@ router.put('/:id', function(req, res) {
         return;
       }
 
-      client.query('UPDATE tasks SET task=$1, status=$2, WHERE id=$3 RETURNING *;',
-      [task, status, id],
+      client.query('UPDATE tasks SET task=$1, is_complete=$2, WHERE id=$3 RETURNING *;',
+      [task, is_complete, id],
       function(err, result) {
         if (err) {
           console.log('Error querying database', err);

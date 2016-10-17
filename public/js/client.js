@@ -4,7 +4,7 @@ $(function() {
   $('#addTask').on('submit', addTask);
 
   //$('#book-list').on('click', '.save', updateBook);
-  //$('#book-list').on('click', '.delete', deleteBook);
+  $('#taskList').on('click', '.delete', deleteTask);
 });
 
 function getTask() {
@@ -25,14 +25,14 @@ function displayTasks(response) {
     //$("#taskTable tr:last").after("<tr class='info'><td>" + tasks.task + "</td><td>" + tasks.status + "</td><td><button>Delete</button></td>" );
 
     $form.append('<input type="text" name="task" value="' + tasks.task + '"/>');
-    $form.append('<input type="text" name="' + tasks.is_complete + '" value="incomplete"/>');
+    $form.append('<input type="text" name="is_complete" value="' + tasks.is_complete + '"/>');
     var $deleteButton = $('<button class="delete">Delete</button>');
     $deleteButton.data('id', tasks.id);
     $form.append($deleteButton);
 
     //var $deleteButton = $('<button class="delete">Delete!</button>');
-    //$deleteButton.data('id', book.id);
-    //$form.append($deleteButton);
+    $deleteButton.data('id', tasks.id);
+    $form.append($deleteButton);
 
 
     $li.append($form);
@@ -54,4 +54,16 @@ function addTask(event) {
   });
 
   $(this).find('input').val('');
+}
+
+function deleteTask(event) {
+  event.preventDefault();
+
+  var tasksId = $(this).data('id');
+
+  $.ajax({
+    type: 'DELETE',
+    url: '/tasks/' + tasksId,
+    success: getTask
+  });
 }
