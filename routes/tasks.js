@@ -2,7 +2,7 @@ var router = require('express').Router();
 var pg = require('pg');
 
 var config = {
-  database: 'Meng'
+  database: 'projects'
 };
 
 var pool = new pg.Pool(config);

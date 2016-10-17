@@ -16,5 +16,6 @@ body {
 }
 
 .toDo {
+  margin-left: inherit;
   text-align: center;
 }
