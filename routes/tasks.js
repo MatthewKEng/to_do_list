@@ -54,34 +54,6 @@ router.post('/', function(req, res){
   });
 });
 
-router.put('/:id', function(req, res) {
-  var id = req.params.id;
-  var task = req.body.task;
-  var status = req.body.is_complete;
-
-  pool.connect(function(err, client, done){
-    try {
-      if (err) {
-        console.log('Error connecting the DB', err);
-        res.sendStatus(500);
-        return;
-      }
-
-      client.query('UPDATE tasks SET task=$1, is_complete=$2, WHERE id=$3 RETURNING *;',
-      [task, is_complete, id],
-      function(err, result) {
-        if (err) {
-          console.log('Error querying database', err);
-          res.sendStatus(500);
-        } else {
-          res.send(result.rows);
-        }
-      });
-    } finally {
-      done();
-    }
-  });
-});
 
 router.put('/:id', function(req, res){
   console.log('Completing a task');
