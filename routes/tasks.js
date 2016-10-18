@@ -83,6 +83,37 @@ router.put('/:id', function(req, res) {
   });
 });
 
+router.put('/:id', function(req, res){
+  console.log('Completing a task');
+  var id = req.params.id;
+
+  pool.connect (function(err, client, done){
+    try {
+    if(err){
+      console.log('Error connecting to the database');
+      res.sendStatus(500);
+      return;
+    }
+
+      client.query('UPDATE tasks SET is_complete=$2 WHERE id=$1 RETURNING *;',
+       [id, true], function(err, results){
+        done();
+        if(err){
+          console.log('Error Completing completeTask: ', err);
+          res.sendStatus(500);
+        } else {
+          console.log(results.rows);
+          res.send(results.rows);
+        }
+      });
+    } finally {
+      done();
+    }
+  });
+});
+
+
+
 router.delete('/:id', function(req, res){
   var id = req.params.id;
 
@@ -100,7 +131,6 @@ router.delete('/:id', function(req, res){
           res.sendStatus(500);
           return;
         }
-
         res.sendStatus(204);
       });
     } finally {

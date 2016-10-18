@@ -3,6 +3,10 @@ $(function() {
 
   $('#addTask').on('submit', addTask);
 
+  $('#taskList').on('click', '.done', completeTask);
+      //var idToComplete = $(this).parent().data('id');
+      //console.log('We are completing task: ', idToComplete);
+
   //$('#book-list').on('click', '.save', updateBook);
   $('#taskList').on('click', '.delete', deleteTask);
 });
@@ -26,11 +30,10 @@ function displayTasks(response) {
 
     $form.append('<input type="text" name="task" value="' + tasks.task + '"/>');
     $form.append('<input type="text" name="is_complete" value="' + tasks.is_complete + '"/>');
+    var $doneButton = $('<button class="done">Done!</button>');
+    $doneButton.data('id', tasks.id);
+    $form.append($doneButton);
     var $deleteButton = $('<button class="delete">Delete</button>');
-    $deleteButton.data('id', tasks.id);
-    $form.append($deleteButton);
-
-    //var $deleteButton = $('<button class="delete">Delete!</button>');
     $deleteButton.data('id', tasks.id);
     $form.append($deleteButton);
 
@@ -56,6 +59,19 @@ function addTask(event) {
   $(this).find('input').val('');
 }
 
+function completeTask(event){
+  event.preventDefault();
+
+  var tasksId = $(this).data('id');
+
+  $.ajax({
+    type: 'PUT',
+    url: '/tasks/' + tasksId,
+    success: getTask
+  });
+};
+
+
 function deleteTask(event) {
   event.preventDefault();
 
@@ -66,4 +82,4 @@ function deleteTask(event) {
     url: '/tasks/' + tasksId,
     success: getTask
   });
-}
+};
